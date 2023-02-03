@@ -7,11 +7,13 @@ export class Connect {
     }
 
     async createStorage() {
-        openDB('bets', 1, {
-            upgrade(db) {
+        await openDB('bets', 1, {
+            upgrade(db, oldVersion, newVersion) {
+                console.log(oldVersion, newVersion);
                 db.createObjectStore('users', { keyPath: 'id' });
                 db.createObjectStore('logs', { keyPath: 'id' });
                 db.createObjectStore('houses', { keyPath: 'id' });
+                db.createObjectStore('deposits', { keyPath: 'id' });
             }
         });
     }
