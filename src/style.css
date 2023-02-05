@@ -42,13 +42,16 @@ header {
     align-items: center;
     width: 100%;
     padding: 10px 0;
+    background-color: var(--color-1);
+    border-bottom: 1px solid var(--color-4);
+    box-shadow: -1px 1px 9px 1px rgba(75, 75, 75, 0.26);
 }
 
 .main {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    width: 1200px;
+    width: 1400px;
 }
 
 .account-info {
@@ -58,7 +61,7 @@ header {
     flex-direction: column;
     width: 430px;
     padding: 5px;
-    margin-top: 45px;
+    /* margin-top: 45px; */
     /* background-color: var(--color-3);
     border: 1px solid var(--color-5); */
     border-radius: 5px;
@@ -77,4 +80,22 @@ header {
     font-size: 20px;
     padding: 0;
     margin: 15px 0 5px 0;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+footer > p {
+    font-size: 11px;
+    font-weight: 300;
+}
+
+footer > p > a {
+    text-decoration: none;
+    color: #fff;
 }

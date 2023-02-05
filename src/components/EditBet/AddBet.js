@@ -42,6 +42,7 @@ export class AddNewBet extends LitElement {
 
         const db = await openDB('bets', 1);
         db.add('logs', betObj)
+            // .then(result => window.location.reload())
             .then(result => window.location.reload())
             .catch(console.log('error create new house'));
         db.close();

@@ -8,12 +8,15 @@ export class Connect {
 
     async createStorage() {
         await openDB('bets', 1, {
-            upgrade(db, oldVersion, newVersion) {
-                console.log(oldVersion, newVersion);
-                db.createObjectStore('users', { keyPath: 'id' });
-                db.createObjectStore('logs', { keyPath: 'id' });
-                db.createObjectStore('houses', { keyPath: 'id' });
-                db.createObjectStore('deposits', { keyPath: 'id' });
+            upgrade(db) {
+                const users = db.createObjectStore('users', { keyPath: 'id' });
+                users.createIndex('id', 'id');
+                const logs = db.createObjectStore('logs', { keyPath: 'id' });
+                logs.createIndex('id', 'id');
+                const houses = db.createObjectStore('houses', { keyPath: 'id' });
+                houses.createIndex('id', 'id');
+                const deposits = db.createObjectStore('deposits', { keyPath: 'id' });
+                deposits.createIndex('id', 'id');
             }
         });
     }
@@ -22,6 +25,7 @@ export class Connect {
         const db = await openDB('bets', 1);
         let store = db.transaction('houses').store;
         let cursor = await store.openCursor();
+        // console.log(await db.getAllFromIndex('houses', 'id'));
 
         const list = [];
         while (true) {
@@ -38,24 +42,71 @@ export class Connect {
         return list;
     }
 
-    async getLogsByUser(userid) {
+    async countHouses(userid) {
         const db = await openDB('bets', 1);
-        let store = db.transaction('logs').store;
+        let store = db.transaction('houses').store;
         let cursor = await store.openCursor();
 
-        const list = [];
-        while (true) {
+        let count = 0;
+        while (cursor) {
             const user = Number(cursor.value.user);
 
-            user === Number(userid) ? list.push(cursor.value) : '';
+            if (user === Number(userid)) {
+                count++;
+            }
 
             cursor = await cursor.continue();
-            if (!cursor) break;
         }
 
         db.close();
 
-        return list;
+        return count;
+    }
+
+    async countLogs(userid) {
+        const db = await openDB('bets', 1);
+        let store = db.transaction('logs').store;
+        let cursor = await store.openCursor();
+
+        let count = 0;
+        while (cursor) {
+            const user = Number(cursor.value.user);
+
+            if (user === Number(userid)) {
+                count++;
+            }
+
+            cursor = await cursor.continue();
+        }
+
+        db.close();
+
+        return count;
+    }
+
+    async getLogsByUser(userid, page = 1, limit = 50) {
+        const db = await openDB('bets', 1);
+        let store = db.transaction('logs').store;
+        let cursor = await store.openCursor();
+
+        let logs = [];
+        while (cursor) {
+            const user = Number(cursor.value.user);
+
+            if (user === Number(userid)) {
+                logs.push(cursor.value);
+            }
+
+            cursor = await cursor.continue();
+        }
+
+        db.close();
+
+        logs.sort((a, b) => new Date(b.date) - new Date(a.date));
+        let startIndex = (page - 1) * limit;
+        let endIndex = startIndex + limit;
+
+        return logs.slice(startIndex, endIndex);
     }
 
     async getLogById(userid, id) {
@@ -64,7 +115,7 @@ export class Connect {
         let cursor = await store.openCursor();
 
         let result;
-        while (true) {
+        while (cursor) {
             const user = Number(cursor.value.user);
             const logid = Number(cursor.value.id);
 
@@ -75,7 +126,7 @@ export class Connect {
                 await cursor.continue();
             }
 
-            if (!cursor) break;
+            // if (!cursor) break;
         }
 
         db.close();
@@ -96,7 +147,7 @@ export class Connect {
         let cursor = await store.openCursor();
 
         let result;
-        while (true) {
+        while (cursor) {
             const logid = Number(cursor.value.id);
 
             if (logid === Number(userid)) {
@@ -106,7 +157,7 @@ export class Connect {
                 await cursor.continue();
             }
 
-            if (!cursor) break;
+            // if (!cursor) break;
         }
 
         db.close();

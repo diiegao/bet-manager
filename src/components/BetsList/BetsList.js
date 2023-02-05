@@ -61,7 +61,7 @@ export class BetsList extends LitElement {
     }
 
     numberCurrency(number) {
-        return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        return number?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
     calcPNL() {

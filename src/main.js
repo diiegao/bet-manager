@@ -9,14 +9,16 @@ const appContent = html`
     </header>
     <div class="main">
         <div class="bets-list">
-            <h2>Bet List</h2>
             <bets-content></bets-content>
         </div>
         <div class="account-info">
-            <create-betlog></create-betlog>
             <my-balance></my-balance>
+            <my-deposits></my-deposits>
         </div>
     </div>
+    <footer>
+        <p>made by <a href="https://twitter.com/xBlackBeardSOL">BlackBeard</a></p>
+    </footer>
 `;
 
 render(appContent, document.querySelector('#app'));

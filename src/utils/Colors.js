@@ -8,6 +8,7 @@ export const Colors = {
     green2: "#0ba484",
     green3: "#237563",
     green4: "#69bc76",
+    green5: "#233928",
     red1: "#c30101",
     red2: "#940000",
     red3: "#6f0000",
