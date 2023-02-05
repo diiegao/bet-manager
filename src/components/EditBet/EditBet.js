@@ -51,8 +51,9 @@ export class EditBet extends LitElement {
         const elStatus = this.renderRoot.querySelector('.bet-status-option:checked');
         const getUser = this.session.get();
 
-        if (elHouse1.value === '') return this.showMsg(elHouse1, 'Please select a House1.');
-        if (elHouse2.value === '') return this.showMsg(elHouse2, 'Please select a House2.');
+        // if (elHouse1.value === '') return this.showMsg(elHouse1, 'Please select a House1.');
+        // if (elHouse2.value === '') return this.showMsg(elHouse2, 'Please select a House2.');
+        if (elHouse1 === '' && elHouse2 === '') return this.showMsg(elHouse1, 'Only 1 house can be null.');
         if (elHouse1.value === elHouse2.value || elHouse2.value === elHouse1.value) return this.showMsg(elHouse1, 'The houses cannot be the same.');
         if (elPrice1.value === '') return this.showMsg(elPrice1, 'Please select a Price1.');
         if (elPrice2.value === '') return this.showMsg(elPrice2, 'Please select a Price2.');
@@ -100,6 +101,7 @@ export class EditBet extends LitElement {
                 <div class="edit-house-1">
                     <span>House 1</span>
                     <select name="houses-1" id="houses-1" class="select-house-1">
+                        <option value="0">Null</option>
                         ${this.houses.map(h => html`<option value="${h.id}" ?selected=${h.id === this.logs.house1 ? 'selected' : ''}>${h.name}</option>`)}
                     </select>
                     <span>Bet</span>
@@ -112,6 +114,7 @@ export class EditBet extends LitElement {
                 <div class="edit-house-2">
                     <span>House 2</span>
                     <select name="houses-2" id="houses-2" class="select-house-2">
+                        <option value="0">Null</option>
                         ${this.houses.map(h => html`<option value="${h.id}" ?selected=${h.id === this.logs.house2 ? 'selected' : ''}>${h.name}</option>`)}
                     </select>
                     <span>Bet</span>
