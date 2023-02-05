@@ -7,6 +7,7 @@ import { EditBet } from './EditBet/EditBet';
 import { SelectUsers } from './SelectUsers/SelectUsers';
 import { AddNewUser } from './AddNewUser/AddNewUser';
 import { AddNewHouse } from './AddNewHouse/AddNewHouse';
+import { AddNewTransaction } from './AddNewTransaction/AddNewTransaction';
 import { AddNewBet } from './EditBet/AddBet';
 import { Deposits } from './Deposits/Deposits';
 
@@ -19,5 +20,6 @@ customElements.define('edit-bet', EditBet);
 customElements.define('select-users', SelectUsers);
 customElements.define('create-user', AddNewUser);
 customElements.define('create-house', AddNewHouse);
+customElements.define('create-transaction', AddNewTransaction);
 customElements.define('create-bet', AddNewBet);
 customElements.define('my-deposits', Deposits);

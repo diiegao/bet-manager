@@ -143,4 +143,14 @@ export const Styles = css`
         background-color: ${unsafeCSS(Colors.green1)};
         border: 1px solid ${unsafeCSS(Colors.green2)};
     }
+
+    .notification {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: ${unsafeCSS(Colors.red3)};
+        border: ${unsafeCSS(Colors.red1)};
+        border-radius: 5px;
+        margin: 6px 0;
+    }
 `;

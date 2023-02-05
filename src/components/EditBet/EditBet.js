@@ -3,6 +3,7 @@ import { Connect } from '../../data/Connect';
 import { Session } from '../../data/Session';
 import { openDB } from 'idb';
 import { Styles } from './Styles';
+import { Colors } from '../../utils/Colors';
 
 export class EditBet extends LitElement {
 
@@ -32,41 +33,56 @@ export class EditBet extends LitElement {
 
     static styles = Styles;
 
-    // async getBetHouses() {
-    //     // const userId = this.session.get();
-    //     const db = await openDB('bets', 1);
-    //     const tx = db.transaction('houses');
-    //     const store = tx.objectStore('houses');
-    //     const result = store.getAll();
-    //     await tx.done;
-    //     return result;
-    // }
-
-    // async getBetLogs() {
-    //     const db = await openDB('bets', 1);
-    //     const tx = db.transaction('logs', 'readwrite');
-    //     const store = tx.objectStore('logs');
-    //     const result = store.get(this.bet);
-    //     await tx.done;
-    //     return result;
-    // }
+    showMsg(el, msg) {
+        const notification = this.renderRoot.querySelector('.notification');
+        notification.setAttribute('style', 'padding: 5px');
+        notification.innerHTML = msg;
+        el.setAttribute('style', `border: 1px solid ${Colors.red1}`);
+    }
 
     async edit(e) {
+        const notification = this.renderRoot.querySelector('.notification');
+        const elHouse1 = this.renderRoot.querySelector('.select-house-1');
+        const elHouse2 = this.renderRoot.querySelector('.select-house-2');
+        const elOdd1 = this.renderRoot.querySelector('.odd-house-1');
+        const elOdd2 = this.renderRoot.querySelector('.odd-house-2');
+        const elPrice1 = this.renderRoot.querySelector('.price-house-1');
+        const elPrice2 = this.renderRoot.querySelector('.price-house-2');
+        const elStatus = this.renderRoot.querySelector('.bet-status-option:checked');
+        const getUser = this.session.get();
+
+        if (elHouse1.value === '') return this.showMsg(elHouse1, 'Please select a House1.');
+        if (elHouse2.value === '') return this.showMsg(elHouse2, 'Please select a House2.');
+        if (elHouse1.value === elHouse2.value || elHouse2.value === elHouse1.value) return this.showMsg(elHouse1, 'The houses cannot be the same.');
+        if (elPrice1.value === '') return this.showMsg(elPrice1, 'Please select a Price1.');
+        if (elPrice2.value === '') return this.showMsg(elPrice2, 'Please select a Price2.');
+        if (elOdd1.value === '') return this.showMsg(elOdd1, 'Please select a Odd1.');
+        if (elOdd2.value === '') return this.showMsg(elOdd2, 'Please select a Odd2.');
+        if (!getUser) return notification.innerHTML = 'Select a profile';
+
+        const fixHouse1 = Number(elHouse1.value);
+        const fixHouse2 = Number(elHouse2.value);
+        const fixOdd1 = Number(elOdd1.value.replace(',', '.'));
+        const fixOdd2 = Number(elOdd2.value.replace(',', '.'));
+        const fixPrice1 = Number(elPrice1.value);
+        const fixPrice2 = Number(elPrice2.value);
+        const fixStatus = Number(elStatus.value);
+
         // console.log(this.shadowRoot.querySelector('.select-house-1').value);
         const db = await openDB('bets', 1);
         const tx = db.transaction('logs', 'readwrite');
         const store = tx.objectStore('logs');
         store.put({
             id: Number(this.bet),
-            house1: Number(this.renderRoot.querySelector('.select-house-1').value),
-            house2: Number(this.renderRoot.querySelector('.select-house-2').value),
-            odd1: Number(this.renderRoot.querySelector('.odd-house-1').value),
-            odd2: Number(this.renderRoot.querySelector('.odd-house-2').value),
-            price1: Number(this.renderRoot.querySelector('.price-house-1').value),
-            price2: Number(this.renderRoot.querySelector('.price-house-2').value),
+            house1: fixHouse1,
+            house2: fixHouse2,
+            odd1: fixOdd1,
+            odd2: fixOdd2,
+            price1: fixPrice1,
+            price2: fixPrice2,
             date: Number(this.bet),
-            winner: Number(this.renderRoot.querySelector('.bet-status-option:checked').value),
-            user: this.session.get()
+            winner: fixStatus,
+            user: getUser
         });
         await tx.done;
 
@@ -133,6 +149,7 @@ export class EditBet extends LitElement {
                 </div>
             </label>
         </div>
+            <div class="notification"></div>
             <button @click=${this.edit} class="send-edit-bet">Send</button>
         </div>
         

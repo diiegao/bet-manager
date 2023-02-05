@@ -18,6 +18,7 @@ export const Styles = css`
         font-size: 18px;
         margin: 0;
         margin-top: 10px;
+        padding: 15px;
     }
 
     .content {
@@ -31,13 +32,14 @@ export const Styles = css`
 
     .box-input {
         display: flex;
+        justify-content: center;
         flex-direction: column;
         font-size: 14px;
         font-weight: 300;
     }
 
-    .house-name,
-    .house-balance {
+    .user-houses,
+    .transaction-value {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -52,7 +54,37 @@ export const Styles = css`
         outline: none;
     }
 
-    .send-new-house {
+    .transactions-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .type-transaction {
+        display: none;
+    }
+
+    .type-transaction + .transaction-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 10px;
+        margin: 5px;
+        background-color: ${unsafeCSS(Colors.gray5)};
+        border: 1px solid ${unsafeCSS(Colors.gray3)};
+        text-transform: uppercase;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .type-transaction:checked + .transaction-button {
+        background-color: ${unsafeCSS(Colors.gray1)};
+        border: 1px solid ${unsafeCSS(Colors.gray2)};
+        box-shadow: 1px 1px 8px 2px ${unsafeCSS(Colors.gray5)}99;
+    }
+
+    .send-new-transaction {
         color: #333;
         font-size: 16px;
         background-color: ${unsafeCSS(Colors.green4)};
@@ -62,7 +94,7 @@ export const Styles = css`
         margin-top: 5px;
     }
 
-    .send-new-house:hover {
+    .send-new-transaction:hover {
         background-color: ${unsafeCSS(Colors.green1)};
         border: 1px solid ${unsafeCSS(Colors.green2)};
     }

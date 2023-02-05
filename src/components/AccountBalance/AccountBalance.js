@@ -11,6 +11,7 @@ export class AccountBalance extends LitElement {
             logs: { type: Array },
             totalBalance: { type: Number },
             countLogs: { type: Number },
+            totalPNL: { type: Number }
         };
     }
 
@@ -22,6 +23,7 @@ export class AccountBalance extends LitElement {
         this.logs = [];
         this.totalBalance = 0;
         this.countLogs = 0;
+        this.totalPNL = 0;
     }
 
     async connectedCallback() {
