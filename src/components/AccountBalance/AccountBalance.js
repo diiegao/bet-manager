@@ -59,7 +59,7 @@ export class AccountBalance extends LitElement {
                     if (bet.house1 === houseid) {
                         if (bet.winner === 1) { // winner
                             // wtf++;
-                            let pnl = (bet.price1 * bet.odd1) - bet.price2;
+                            let pnl = (bet.price1 * bet.odd1) - bet.price1;
                             // let all = bet.price1 + bet.price2;
                             // console.log(pnl);
                             return result += pnl;
@@ -78,7 +78,7 @@ export class AccountBalance extends LitElement {
                         }
                         if (bet.winner === 2) { // winner
                             // wtf++;
-                            let pnl = (bet.price2 * bet.odd2) - bet.price1;
+                            let pnl = (bet.price2 * bet.odd2) - bet.price2;
                             // let all = bet.price1 + bet.price2;
                             // console.log(pnl);
                             return result += pnl;
