@@ -81,6 +81,12 @@ export class BetsList extends LitElement {
         return result.toFixed(2) + '%';
     }
 
+    calcTotalGain(obj, won) {
+        const all = obj.price1 + obj.price2;
+        const pnl = won === 1 ? (obj.price1 * obj.odd1) - obj.price2 : (obj.price2 * obj.odd2) - obj.price1;
+        return pnl;
+    }
+
     /*
         Winner = 0 - No Result Yet
         Winner = 1 - House1 Win
@@ -110,7 +116,7 @@ export class BetsList extends LitElement {
                     </div>
                     <div class="bet-values">
                         <div class="bet-price">${this.numberCurrency(this.logs.price1)}</div>
-                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 1)}">${this.logs.winner === 1 ? '+' + this.numberCurrency(this.logs.price1 * this.logs.odd1 - this.logs.price1) : this.logs.winner === 0 ? this.numberCurrency(this.logs.price1 * this.logs.odd1 - this.logs.price1) : '-' + this.numberCurrency(this.logs.price1)}</div>
+                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 1)}">${this.logs.winner === 1 ? '+' + this.numberCurrency(this.calcTotalGain(this.logs, 1)) : this.logs.winner === 0 ? this.numberCurrency(this.calcTotalGain(this.logs, 1)) : '-' + this.numberCurrency(this.logs.price1)}</div>
                     </div>
                 </div>
                 <div class="bet-house-odd-2 ${this.colorWin(this.logs.winner, 0, 2)}">
@@ -120,7 +126,7 @@ export class BetsList extends LitElement {
                     </div>
                     <div class="bet-values">
                         <div class="bet-price">${this.numberCurrency(this.logs.price2)}</div>
-                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 2)}">${this.logs.winner === 2 ? '+' + this.numberCurrency(this.logs.price2 * this.logs.odd2 - this.logs.price2) : this.logs.winner === 0 ? this.numberCurrency(this.logs.price2 * this.logs.odd2 - this.logs.price2) : '-' + this.numberCurrency(this.logs.price2)}</div>
+                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 2)}">${this.logs.winner === 2 ? '+' + this.numberCurrency(this.calcTotalGain(this.logs, 2)) : this.logs.winner === 0 ? this.numberCurrency(this.calcTotalGain(this.logs, 2)) : '-' + this.numberCurrency(this.logs.price2)}</div>
                     </div>
                 </div>
                 <div class="bet-date">${this.convertDate(this.logs.date)}</div>

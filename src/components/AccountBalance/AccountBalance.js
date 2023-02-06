@@ -51,30 +51,42 @@ export class AccountBalance extends LitElement {
 
     sumHouseBalance(houseid, balance) {
         let result = balance;
+        // let wtf = 0;
         if (this.countLogs > 0) {
             this.logs.map(bet => {
+                console.log(bet, balance);
                 if (bet.user === this.session.get()) {
                     if (bet.house1 === houseid) {
                         if (bet.winner === 1) { // winner
-                            let pnl = (bet.price1 * bet.odd1) - bet.price1;
-                            let all = bet.price1 + bet.price2;
-                            return result = result + bet.price1 + pnl - all;
-                            // return result = result + pnl;
-                        } else if (bet.winner === 2) { // loser
-                            return result = result - bet.price1;
+                            // wtf++;
+                            let pnl = (bet.price1 * bet.odd1) - bet.price2;
+                            // let all = bet.price1 + bet.price2;
+                            // console.log(pnl);
+                            return result += pnl;
                         }
-                    } else if (bet.house2 === houseid) {
+                        if (bet.winner === 2) { // loser
+                            // wtf++;
+                            // console.log(!bet.winner === 2);
+                            return result -= bet.price1;
+                        }
+                    }
+                    if (bet.house2 === houseid) {
                         if (bet.winner === 1) { // loser
-                            return result = result - bet.price2;
-                        } else if (bet.winner === 2) { // winner
-                            let pnl = (bet.price2 * bet.odd2) - bet.price2;
-                            let all = bet.price1 + bet.price2;
-                            return result = result + bet.price2 + pnl - all;
-                            // return result = result + pnl;
+                            // wtf++;
+                            // console.log(!bet.winner === 1);
+                            return result -= bet.price2;
+                        }
+                        if (bet.winner === 2) { // winner
+                            // wtf++;
+                            let pnl = (bet.price2 * bet.odd2) - bet.price1;
+                            // let all = bet.price1 + bet.price2;
+                            // console.log(pnl);
+                            return result += pnl;
                         }
                     }
                 }
             });
+            // console.log(wtf);
             this.totalBalance = this.totalBalance + result;
             return result;
         } else {
