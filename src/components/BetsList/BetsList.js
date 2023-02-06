@@ -83,7 +83,7 @@ export class BetsList extends LitElement {
 
     calcTotalGain(obj, won) {
         const all = obj.price1 + obj.price2;
-        const pnl = won === 1 ? (obj.price1 * obj.odd1) - obj.price2 : (obj.price2 * obj.odd2) - obj.price1;
+        const pnl = won === 1 ? (obj.price1 * obj.odd1) - obj.price1 : (obj.price2 * obj.odd2) - obj.price2;
         return pnl;
     }
 
