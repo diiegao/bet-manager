@@ -11,7 +11,8 @@ export class AccountBalance extends LitElement {
             logs: { type: Array },
             totalBalance: { type: Number },
             countLogs: { type: Number },
-            totalPNL: { type: Number }
+            totalPNL: { type: Number },
+            newBalance: { type: Array }
         };
     }
 
@@ -24,6 +25,7 @@ export class AccountBalance extends LitElement {
         this.totalBalance = 0;
         this.countLogs = 0;
         this.totalPNL = 0;
+        this.newBalance = [];
     }
 
     async connectedCallback() {
@@ -31,6 +33,44 @@ export class AccountBalance extends LitElement {
         await this.db.getHousesByUser(this.session.get()).then(keys => this.houses = keys);
         await this.db.getLogsByUser(this.session.get(), 1, 9999).then(keys => this.logs = keys);
         await this.db.countLogs(this.session.get()).then(keys => this.countLogs = keys);
+        this.houses.map(house => {
+            this.totalBalance += house.balance;
+            let result = house.balance;
+
+            if (this.countLogs > 0 && this.logs != undefined) {
+
+                this.logs.map(bet => {
+
+                    if (bet.house1 === house.id) {
+
+                        if (bet.winner === 1) {
+                            let pnl = (bet.price1 * bet.odd1) - bet.price1;
+
+                            return this.newBalance.push({ id: house.id, bet: bet.id, win: pnl, lose: 0 });
+                        }
+
+                        if (bet.winner === 2) {
+                            return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: bet.price1 });
+                        }
+
+                    }
+
+                    if (bet.house2 === house.id) {
+
+                        if (bet.winner === 1) {
+                            return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: bet.price2 });
+                        }
+
+                        if (bet.winner === 2) {
+                            let pnl = (bet.price2 * bet.odd2) - bet.price2;
+                            return this.newBalance.push({ id: house.id, bet: bet.id, win: pnl, lose: 0 });
+                        }
+
+                    }
+                });
+            }
+        });
+        console.log(this.newBalance);
     }
 
     static styles = Styles;
@@ -47,51 +87,6 @@ export class AccountBalance extends LitElement {
 
     numberCurrency(number) {
         return number?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    sumHouseBalance(houseid, balance) {
-        let result = balance;
-        // let wtf = 0;
-        if (this.countLogs > 0) {
-            this.logs.map(bet => {
-                console.log(bet, balance);
-                if (bet.user === this.session.get()) {
-                    if (bet.house1 === houseid) {
-                        if (bet.winner === 1) { // winner
-                            // wtf++;
-                            let pnl = (bet.price1 * bet.odd1) - bet.price1;
-                            // let all = bet.price1 + bet.price2;
-                            // console.log(pnl);
-                            return result += pnl;
-                        }
-                        if (bet.winner === 2) { // loser
-                            // wtf++;
-                            // console.log(!bet.winner === 2);
-                            return result -= bet.price1;
-                        }
-                    }
-                    if (bet.house2 === houseid) {
-                        if (bet.winner === 1) { // loser
-                            // wtf++;
-                            // console.log(!bet.winner === 1);
-                            return result -= bet.price2;
-                        }
-                        if (bet.winner === 2) { // winner
-                            // wtf++;
-                            let pnl = (bet.price2 * bet.odd2) - bet.price2;
-                            // let all = bet.price1 + bet.price2;
-                            // console.log(pnl);
-                            return result += pnl;
-                        }
-                    }
-                }
-            });
-            // console.log(wtf);
-            this.totalBalance = this.totalBalance + result;
-            return result;
-        } else {
-            return balance;
-        }
     }
 
     getWinLose(houseid) {
@@ -141,7 +136,18 @@ export class AccountBalance extends LitElement {
                         <div class="house-name size">${e.name}</div>
                         <div class="house-win size">${this.getWinLose(e.id)?.win === undefined ? 0 : this.getWinLose(e.id)?.win}</div>
                         <div class="house-lose size">${this.getWinLose(e.id)?.lose === undefined ? 0 : this.getWinLose(e.id)?.lose}</div>
-                        <div class="house-balance size">${this.numberCurrency(this.sumHouseBalance(e.id, e.balance))}</div>
+                        <div class="house-balance size">
+                        ${this.numberCurrency(this.newBalance.reduce((acc, cur) => {
+            if (cur.id === e.id) {
+                if (cur.win > 0) {
+                    acc += cur.win;
+                } else if (cur.lose > 0) {
+                    acc -= cur.lose;
+                }
+            }
+            return acc;
+        }, e.balance))}
+                        </div>
                     </div>`)}
                     <div class="house-box-content">
                         <div class="house-name">Total</div>
