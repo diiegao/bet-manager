@@ -65,8 +65,8 @@ export class EditBet extends LitElement {
         const fixHouse2 = Number(elHouse2.value);
         const fixOdd1 = Number(elOdd1.value.replace(',', '.'));
         const fixOdd2 = Number(elOdd2.value.replace(',', '.'));
-        const fixPrice1 = Number(elPrice1.value);
-        const fixPrice2 = Number(elPrice2.value);
+        const fixPrice1 = Number(elPrice1.value.replace(',', '.'));
+        const fixPrice2 = Number(elPrice2.value.replace(',', '.'));
         const fixStatus = Number(elStatus.value);
 
         // console.log(this.shadowRoot.querySelector('.select-house-1').value);
@@ -149,6 +149,12 @@ export class EditBet extends LitElement {
                 <input type="radio" id="draw" name="house-status" class="bet-status-option" value="3" ?checked=${this.logs.winner === 3 ? 'checked' : ''}>
                 <div class="bet-status-button button-draw">
                     Draw
+                </div>
+            </label>
+            <label for="cash-out">
+                <input type="radio" id="cash-out" name="house-status" class="bet-status-option" value="4" ?checked=${this.logs.winner === 4 ? 'checked' : ''}>
+                <div class="bet-status-button button-cash-out">
+                    Cashout
                 </div>
             </label>
         </div>

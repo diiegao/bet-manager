@@ -102,6 +102,11 @@ export const Styles = css`
         border: 1px solid ${unsafeCSS(Colors.yellow2)};
     }
 
+    .button-cash-out {
+        background-color: ${unsafeCSS(Colors.blue1)};
+        border: 1px solid ${unsafeCSS(Colors.blue2)};
+    }
+
     .bet-status-option:checked + .bet-status-button {
         box-shadow: 1px 1px 8px 2px rgba(64,69,75,0.74);
     }
@@ -124,6 +129,13 @@ export const Styles = css`
         background-color: ${unsafeCSS(Colors.yellow1)};
         border: 1px solid ${unsafeCSS(Colors.yellow2)};
         box-shadow: 1px 1px 8px 2px ${unsafeCSS(Colors.yellow1)}99;
+    }
+
+    .bet-status-option:checked + .bet-status-button.button-cash-out {
+        color: #fff;
+        background-color: ${unsafeCSS(Colors.blue3)};
+        border: 1px solid ${unsafeCSS(Colors.blue4)};
+        box-shadow: 1px 1px 8px 2px ${unsafeCSS(Colors.blue4)}99;
     }
 
     .send-edit-bet {

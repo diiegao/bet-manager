@@ -74,6 +74,13 @@ export class Connect {
         return result;
     }
 
+    async removeByID(store, id) {
+        const db = await openDB('bets', 1);
+        const result = await db.delete(store, id);
+        db.close();
+        return result;
+    }
+
     async countHouses(userid) {
         const db = await openDB('bets', 1);
         let store = db.transaction('houses').store;

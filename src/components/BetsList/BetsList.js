@@ -55,8 +55,8 @@ export class BetsList extends LitElement {
     }
 
     colorWin(winner, type, house) {
-        const borderColor = winner !== 0 && winner === house ? 'bet-house-winner' : winner !== 0 && winner === 3 ? 'bet-house-draw' : winner !== 0 ? 'bet-house-loser' : '';
-        const fontColor = winner !== 0 && winner === house ? 'bet-winner' : winner !== 0 && winner === 3 ? 'bet-draw' : winner !== 0 ? 'bet-loser' : '';
+        const borderColor = winner !== 0 && winner === house ? 'bet-house-winner' : winner !== 0 && winner === 3 ? 'bet-house-draw' : winner !== 0 && winner === 4 ? 'bet-house-cashout' : winner !== 0 ? 'bet-house-loser' : '';
+        const fontColor = winner !== 0 && winner === house ? 'bet-winner' : winner !== 0 && winner === 3 ? 'bet-draw' : winner !== 0 && winner == 4 ? 'bet-cashout' : winner !== 0 ? 'bet-loser' : '';
         return type === 0 ? borderColor : fontColor;
     }
 
@@ -81,10 +81,41 @@ export class BetsList extends LitElement {
         return result.toFixed(2) + '%';
     }
 
-    calcTotalGain(obj, won) {
-        const all = obj.price1 + obj.price2;
-        const pnl = won === 1 ? (obj.price1 * obj.odd1) - obj.price1 : (obj.price2 * obj.odd2) - obj.price2;
-        return pnl;
+    resultBet(obj, won) {
+        let result;
+        if (won === 1 && obj.winner === 0) {
+            result = this.numberCurrency((obj.price1 * obj.odd1) - obj.price1);
+        }
+
+        if (won === 1 && obj.winner === 1) {
+            result = `+${this.numberCurrency((obj.price1 * obj.odd1) - obj.price1)}`;
+        }
+
+        if (won === 1 && obj.winner === 2) {
+            result = `-${this.numberCurrency(obj.price1)}`;
+        }
+
+        if (won === 1 && obj.winner >= 3) {
+            result = this.numberCurrency(obj.price1);
+        }
+        // ------
+        if (won === 2 && obj.winner === 0) {
+            result = this.numberCurrency((obj.price2 * obj.odd2) - obj.price2);
+        }
+
+        if (won === 2 && obj.winner === 1) {
+            result = `-${this.numberCurrency(obj.price2)}`;
+        }
+
+        if (won === 2 && obj.winner === 2) {
+            result = `+${this.numberCurrency((obj.price2 * obj.odd2) - obj.price2)}`;
+        }
+
+        if (won === 2 && obj.winner >= 3) {
+            result = this.numberCurrency(obj.price2);
+        }
+
+        return result;
     }
 
     /*
@@ -99,10 +130,10 @@ export class BetsList extends LitElement {
         Winner = 8 - Draw Both Houses Lose  
     */
 
-    editBet(e) {
+    removeBet(e) {
         // <float-box><bets-list bet="1675115217507"></bets-list></float-box>
         const floatBox = document.createElement('float-box');
-        floatBox.innerHTML = `<edit-bet bet="${this.bet}"></edit-bet>`;
+        floatBox.innerHTML = `<remove-bet bet="${this.bet}"></edit-bet>`;
         this.shadowRoot.appendChild(floatBox);
     }
 
@@ -116,7 +147,7 @@ export class BetsList extends LitElement {
                     </div>
                     <div class="bet-values">
                         <div class="bet-price">${this.numberCurrency(this.logs.price1)}</div>
-                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 1)}">${this.logs.winner === 1 ? '+' + this.numberCurrency(this.calcTotalGain(this.logs, 1)) : this.logs.winner === 0 ? this.numberCurrency(this.calcTotalGain(this.logs, 1)) : '-' + this.numberCurrency(this.logs.price1)}</div>
+                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 1)}">${this.resultBet(this.logs, 1)}</div>
                     </div>
                 </div>
                 <div class="bet-house-odd-2 ${this.colorWin(this.logs.winner, 0, 2)}">
@@ -126,17 +157,20 @@ export class BetsList extends LitElement {
                     </div>
                     <div class="bet-values">
                         <div class="bet-price">${this.numberCurrency(this.logs.price2)}</div>
-                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 2)}">${this.logs.winner === 2 ? '+' + this.numberCurrency(this.calcTotalGain(this.logs, 2)) : this.logs.winner === 0 ? this.numberCurrency(this.calcTotalGain(this.logs, 2)) : '-' + this.numberCurrency(this.logs.price2)}</div>
+                        <div class="bet-return  ${this.colorWin(this.logs.winner, 1, 2)}">${this.resultBet(this.logs, 2)}</div>
                     </div>
                 </div>
                 <div class="bet-date">${this.convertDate(this.logs.date)}</div>
-                <div class="bet-pnl">${this.logs.winner > 0 ? this.numberCurrency(this.calcPNL()) : 0}</div>
-                <div class="bet-pnl-percent">${this.logs.winner > 0 ? this.calcPnlPercent() : 0}</div>
+                <div class="bet-pnl">${this.logs.winner > 0 && this.logs.winner < 3 ? this.numberCurrency(this.calcPNL()) : 0}</div>
+                <div class="bet-pnl-percent">${this.logs.winner > 0 && this.logs.winner < 3 ? this.calcPnlPercent() : 0}</div>
                 <div class="bet-actions">
                     <button class="button-edit" @click="${this.editBet}">
-                        <svg aria-label="Editar perfil" aria-hidden="false" role="img" width="20" height="20" viewBox="0 0 24 24">
+                        <svg aria-label="Update Bet" aria-hidden="false" role="img" width="20" height="20" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M19.2929 9.8299L19.9409 9.18278C21.353 7.77064 21.353 5.47197 19.9409 4.05892C18.5287 2.64678 16.2292 2.64678 14.817 4.05892L14.1699 4.70694L19.2929 9.8299ZM12.8962 5.97688L5.18469 13.6906L10.3085 18.813L18.0201 11.0992L12.8962 5.97688ZM4.11851 20.9704L8.75906 19.8112L4.18692 15.239L3.02678 19.8796C2.95028 20.1856 3.04028 20.5105 3.26349 20.7337C3.48669 20.9569 3.8116 21.046 4.11851 20.9704Z" fill="currentColor"></path>
                         </svg>
+                    </button>
+                    <button class="button-remove" @click="${this.removeBet}">
+                        <img src="images/bin.png" alt="Remove" width="18" height="18">
                     </button>
                 </div>
             </div>

@@ -11,7 +11,6 @@ export class AccountBalance extends LitElement {
             logs: { type: Array },
             totalBalance: { type: Number },
             countLogs: { type: Number },
-            totalPNL: { type: Number },
             newBalance: { type: Array }
         };
     }
@@ -24,7 +23,6 @@ export class AccountBalance extends LitElement {
         this.logs = [];
         this.totalBalance = 0;
         this.countLogs = 0;
-        this.totalPNL = 0;
         this.newBalance = [];
     }
 
@@ -33,6 +31,7 @@ export class AccountBalance extends LitElement {
         await this.db.getHousesByUser(this.session.get()).then(keys => this.houses = keys);
         await this.db.getLogsByUser(this.session.get(), 1, 9999).then(keys => this.logs = keys);
         await this.db.countLogs(this.session.get()).then(keys => this.countLogs = keys);
+        // const teste = await this.db.removeByID('logs', 1675435693379);
         this.houses.map(house => {
             this.totalBalance += house.balance;
             let result = house.balance;
@@ -45,12 +44,39 @@ export class AccountBalance extends LitElement {
 
                         if (bet.winner === 1) {
                             let pnl = (bet.price1 * bet.odd1) - bet.price1;
-
+                            this.totalBalance += pnl;
                             return this.newBalance.push({ id: house.id, bet: bet.id, win: pnl, lose: 0 });
                         }
 
                         if (bet.winner === 2) {
+                            this.totalBalance -= bet.price1;
                             return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: bet.price1 });
+                        }
+
+                        if (bet.winner === 3) {
+                            if (bet.price1 > 0) {
+                                this.totalBalance += bet.price1;
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: bet.price1, lose: 0 });
+                            }
+
+                            if (bet.price1 < 0) {
+                                const losePrice = String(bet.price1).replace('-', '');
+                                this.totalBalance -= Number(losePrice);
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: Number(losePrice) });
+                            }
+                        }
+
+                        if (bet.winner === 4) {
+                            if (bet.price1 > 0) {
+                                this.totalBalance += bet.price1;
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: bet.price1, lose: 0 });
+                            }
+
+                            if (bet.price1 < 0) {
+                                const losePrice = String(bet.price1).replace('-', '');
+                                this.totalBalance -= Number(losePrice);
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: Number(losePrice) });
+                            }
                         }
 
                     }
@@ -58,12 +84,40 @@ export class AccountBalance extends LitElement {
                     if (bet.house2 === house.id) {
 
                         if (bet.winner === 1) {
+                            this.totalBalance -= bet.price2;
                             return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: bet.price2 });
                         }
 
                         if (bet.winner === 2) {
                             let pnl = (bet.price2 * bet.odd2) - bet.price2;
+                            this.totalBalance += pnl;
                             return this.newBalance.push({ id: house.id, bet: bet.id, win: pnl, lose: 0 });
+                        }
+
+                        if (bet.winner === 3) {
+                            if (bet.price2 > 0) {
+                                this.totalBalance += bet.price2;
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: bet.price2, lose: 0 });
+                            }
+
+                            if (bet.price2 < 0) {
+                                const losePrice = String(bet.price2).replace('-', '');
+                                this.totalBalance -= Number(losePrice);
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: Number(losePrice) });
+                            }
+                        }
+
+                        if (bet.winner === 4) {
+                            if (bet.price2 > 0) {
+                                this.totalBalance += bet.price2;
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: bet.price2, lose: 0 });
+                            }
+
+                            if (bet.price2 < 0) {
+                                const losePrice = String(bet.price2).replace('-', '');
+                                this.totalBalance -= Number(losePrice);
+                                return this.newBalance.push({ id: house.id, bet: bet.id, win: 0, lose: Number(losePrice) });
+                            }
                         }
 
                     }

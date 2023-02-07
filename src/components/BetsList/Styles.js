@@ -41,6 +41,10 @@ export const Styles = css`
         border-left: 4px solid ${unsafeCSS(Colors.yellow1)};
     }
 
+    .bet-house-cashout {
+        border-left: 4px solid ${unsafeCSS(Colors.blue4)};
+    }
+
     .house-odd {
         display: flex;
         justify-content: flex-start;
@@ -82,6 +86,10 @@ export const Styles = css`
         color: ${unsafeCSS(Colors.yellow1)};
     }
 
+    .bet-cashout {
+        color: ${unsafeCSS(Colors.blue4)};
+    }
+
     .bet-date,
     .bet-pnl,
     .bet-pnl-percent,
@@ -95,6 +103,11 @@ export const Styles = css`
         border-left: 1px solid ${unsafeCSS(Colors.gray5)};
     }
 
+    .bet-actions {
+        justify-content: space-between;
+        gap: 5px;
+    }
+
     .bet-date {
         width: 135px;
     }
@@ -105,7 +118,7 @@ export const Styles = css`
 
     .bet-pnl-percent,
     .bet-actions {
-        width: 50px;
+        width: 60px;
     }
     
     .button-edit {
@@ -113,6 +126,14 @@ export const Styles = css`
         align-items: center;
         cursor: pointer;
         color: #fff;
+        background: transparent;
+        border: none;
+    }
+
+    .button-remove {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
         background: transparent;
         border: none;
     }
