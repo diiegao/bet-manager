@@ -133,7 +133,14 @@ export class BetsList extends LitElement {
     removeBet(e) {
         // <float-box><bets-list bet="1675115217507"></bets-list></float-box>
         const floatBox = document.createElement('float-box');
-        floatBox.innerHTML = `<remove-bet bet="${this.bet}"></edit-bet>`;
+        floatBox.innerHTML = `<remove-bet bet="${this.bet}"></remove-bet>`;
+        this.shadowRoot.appendChild(floatBox);
+    }
+
+    editBet(e) {
+        // <float-box><bets-list bet="1675115217507"></bets-list></float-box>
+        const floatBox = document.createElement('float-box');
+        floatBox.innerHTML = `<edit-bet bet="${this.bet}"></edit-bet>`;
         this.shadowRoot.appendChild(floatBox);
     }
 
