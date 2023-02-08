@@ -102,8 +102,8 @@ export class RemoveBet extends LitElement {
                 </div>
                 <div class="bet-date">${this.convertDate(this.betLog.date)}</div>
                 <div class="buttons">
-                    <button class="click-button confirm" @click=${this.deleteBet}>Yes</button>
                     <button class="click-button close" @click=${this.close}>No</button>
+                    <button class="click-button confirm" @click=${this.deleteBet}>Yes</button>
                 </div>
 
             </div>
