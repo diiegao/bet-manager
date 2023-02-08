@@ -14,6 +14,7 @@ const appContent = html`
         <div class="account-info">
             <my-balance></my-balance>
             <my-deposits></my-deposits>
+            <backup-bets></backup-bets>
         </div>
     </div>
     <footer>

@@ -45,8 +45,10 @@ export class AddNewTransaction extends LitElement {
         if (transactionBalance.value === '') return this.showMsg(transactionBalance, 'Select a balance.');
         if (transactionType.value === '') return this.showMsg(transactionType, 'Select a type.');
 
+        const replaceBalance = transactionBalance.value.replace(',', '.');
+
         const fixHouse = Number(transactionHouse.value);
-        const fixBalance = Number(transactionBalance.value);
+        const fixBalance = Number(replaceBalance);
         const fixType = Number(transactionType.value);
 
 
@@ -78,7 +80,7 @@ export class AddNewTransaction extends LitElement {
                         ${this.houses.map(h => html`<option value="${h.id}">${h.name}</option>`)}
                     </select>
                     <span>Value</span>
-                    <input type="text" class="transaction-value">
+                    <input type="text" class="transaction-value" placeholder="10,00">
                     <span>Transaction</span>
                     <div class="transactions-options">
                         <label for="type-deposit">

@@ -11,6 +11,7 @@ import { AddNewTransaction } from './AddNewTransaction/AddNewTransaction';
 import { AddNewBet } from './EditBet/AddBet';
 import { Deposits } from './Deposits/Deposits';
 import { RemoveBet } from './RemoveBet/RemoveBet';
+import { BackupBets } from './BackupBets/BackupBets';
 
 
 customElements.define('my-balance', AccountBalance);
@@ -25,3 +26,4 @@ customElements.define('create-transaction', AddNewTransaction);
 customElements.define('create-bet', AddNewBet);
 customElements.define('my-deposits', Deposits);
 customElements.define('remove-bet', RemoveBet);
+customElements.define('backup-bets', BackupBets);

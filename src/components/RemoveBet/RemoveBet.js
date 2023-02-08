@@ -3,7 +3,6 @@ import { openDB } from 'idb';
 import { Connect } from '../../data/Connect';
 import { Session } from '../../data/Session';
 import { Styles } from './Styles';
-import { Colors } from '../../utils/Colors';
 
 export class RemoveBet extends LitElement {
 

@@ -93,9 +93,9 @@ export class AddNewBet extends LitElement {
                     </select>
                     <span>Bet</span>
                     <div style="display: flex; align-items: center; justify-content: center;">
-                        <input type="text" name="price1" class="price-house-1">
+                        <input type="text" name="price1" class="price-house-1" placeholder="Price: 10,00">
                         <span style="padding: 0 5px 5px 0;">@</span>
-                        <input type="text" name="odd1" class="odd-house-1">
+                        <input type="text" name="odd1" class="odd-house-1" placeholder="Odd: 2.48">
                     </div>
                 </div>
                 <div class="edit-house-2">
@@ -105,9 +105,9 @@ export class AddNewBet extends LitElement {
                     </select>
                     <span>Bet</span>
                     <div style="display: flex; align-items: center; justify-content: center;">
-                        <input type="text" name="price2" class="price-house-2">
+                        <input type="text" name="price2" class="price-house-2" placeholder="Price: 10,00">
                         <span style="padding: 0 5px 5px 0;">@</span>
-                        <input type="text" name="odd2" class="odd-house-2">
+                        <input type="text" name="odd2" class="odd-house-2" placeholder="Odd: 2.48">
                     </div>
                 </div>
             </div>
