@@ -1,14 +1,27 @@
 import { LitElement, html } from 'lit';
 import { openDB } from 'idb';
-// import { Connect } from '../../data/Connect';
+import { Connect } from '../../data/Connect';
 import { Session } from '../../data/Session';
 import { Styles } from './Styles';
 
 export class BackupBets extends LitElement {
 
+    static get properties() {
+        return {
+            users: { type: Array }
+        }
+    }
+
     constructor() {
         super();
+        this.db = new Connect();
         this.session = new Session();
+        this.users = undefined;
+    }
+
+    async connectedCallback() {
+        super.connectedCallback();
+        this.users = await this.db.getUserById(this.session.get());
     }
 
     static styles = Styles;
@@ -33,13 +46,16 @@ export class BackupBets extends LitElement {
         }
 
         db.close();
+
+
         const jsonData = JSON.stringify({ ...storesData });
         const today = new Date();
-        const nameBck = `bets-backup-${today.getDay()}-${today.getMonth()}-${today.getFullYear()}.json`;
+        const nameBck = `${this.users.name}-backup-${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}.json`;
         this.download(jsonData, nameBck, 'application/json');
     }
 
     async importDB() {
+        let resultDeposits = false, resultLogs = false, resultHouses = false, resultUser = false;
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = '.json';
@@ -52,11 +68,15 @@ export class BackupBets extends LitElement {
             const db = await openDB('bets', 1);
             data.forEach(storageName => {
                 storageName.users.map(user => {
-                    db.put('users', { id: Number(user.id), name: user.name });
+                    db.put('users', { id: Number(user.id), name: user.name })
+                        .then(result => resultUser = true)
+                        .catch(err => console.error(err));
                 });
 
                 storageName.houses.map(house => {
-                    db.put('houses', { id: Number(house.id), name: house.name, balance: Number(house.balance), user: Number(house.user) });
+                    db.put('houses', { id: Number(house.id), name: house.name, balance: Number(house.balance), user: Number(house.user) })
+                        .then(result => resultHouses = true)
+                        .catch(err => console.error(err));
                 })
 
                 storageName.deposits.map(deposit => {
@@ -68,7 +88,9 @@ export class BackupBets extends LitElement {
                         type: Number(deposit.type),
                         value: Number(deposit.value),
                         user: Number(deposit.user)
-                    });
+                    })
+                        .then(result => resultDeposits = true)
+                        .catch(err => console.error(err));
                 })
 
                 storageName.logs.map(log => {
@@ -83,13 +105,21 @@ export class BackupBets extends LitElement {
                         date: Number(log.id),
                         winner: Number(log.winner),
                         user: Number(log.user)
-                    });
+                    })
+                        .then(result => resultLogs = true)
+                        .catch(err => console.error(err));
                 })
 
                 db.close();
+
             });
+            if (resultUser === true && resultHouses === true && resultDeposits === true && resultLogs === true) {
+                window.location.reload();
+            }
         });
+
         input.click();
+
     }
 
     download(data, filename, type) {

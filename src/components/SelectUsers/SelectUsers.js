@@ -47,11 +47,15 @@ export class SelectUsers extends LitElement {
         this.parentElement.appendChild(floatBox);
     }
 
+    removeUser(e) {
+        console.log(e.target.previousSibling.getAttribute('data-user-id'));
+    }
+
     render() {
         return html`
             <button class="user-selected" @click=${this.showListUser}>${this.session.get() ? this.user.name : 'Select Profile'}</button>
             <div class="users-list" ?hidden=${!this.open}>
-                ${this.users.map(user => html`<div class="user-select" @click=${this.setUser} data-user-id="${user.id}">${user.name}</div>`)}
+                ${this.users.map(user => html`<div class="user-select"><div class="user-name" @click=${this.setUser} data-user-id="${user.id}">${user.name}</div><button class="remove-user" @click=${this.removeUser}>x</button></div>`)}
                 <button class="add-new-user" @click=${this.addNewUser}>Add New User</button>
             </div>
             `;

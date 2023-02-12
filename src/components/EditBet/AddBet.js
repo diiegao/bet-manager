@@ -57,8 +57,8 @@ export class AddNewBet extends LitElement {
         const fixHouse2 = Number(elHouse2.value);
         const fixOdd1 = Number(elOdd1.value.replace(',', '.'));
         const fixOdd2 = Number(elOdd2.value.replace(',', '.'));
-        const fixPrice1 = Number(elPrice1.value);
-        const fixPrice2 = Number(elPrice2.value);
+        const fixPrice1 = Number(elPrice1.value.replace(',', '.'));
+        const fixPrice2 = Number(elPrice2.value.replace(',', '.'));
 
         const betObj = {
             id: Number(Date.now()),

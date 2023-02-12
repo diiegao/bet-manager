@@ -11,7 +11,9 @@ export class AccountBalance extends LitElement {
             logs: { type: Array },
             totalBalance: { type: Number },
             countLogs: { type: Number },
-            newBalance: { type: Array }
+            realBalance: { type: Number },
+            newBalance: { type: Array },
+            removeButton: { type: Boolean }
         };
     }
 
@@ -23,7 +25,9 @@ export class AccountBalance extends LitElement {
         this.logs = [];
         this.totalBalance = 0;
         this.countLogs = 0;
+        this.realBalance = 0;
         this.newBalance = [];
+        this.removeButton = false;
     }
 
     async connectedCallback() {
@@ -34,7 +38,7 @@ export class AccountBalance extends LitElement {
         // const teste = await this.db.removeByID('logs', 1675435693379);
         this.houses.map(house => {
             this.totalBalance += house.balance;
-            let result = house.balance;
+            this.realBalance += house.balance;
 
             if (this.countLogs > 0 && this.logs != undefined) {
 
@@ -172,11 +176,18 @@ export class AccountBalance extends LitElement {
         }
     }
 
+    toggleRemove(e) {
+        return this.removeButton = !this.removeButton;
+    }
+
     render() {
         return html`
             <div class="header">
                 <h2>My Balance</h2>
-                <button class="create-new-house" @click=${this.addNewHouse} ?disabled=${!this.session.get()}>New House</button>
+                <div class="buttons">
+                    <button class="show-button-remove" @click=${this.toggleRemove} ?disabled=${!this.session.get()}><img src="images/bin.png" alt="Remove House" width="18" height="18"></button>
+                    <button class="create-new-house" @click=${this.addNewHouse} ?disabled=${!this.session.get()}>New House</button>
+                </div>
             </div>
             <div class="houses-balance">
                 <div class="table-header">
@@ -202,10 +213,17 @@ export class AccountBalance extends LitElement {
             return acc;
         }, e.balance))}
                         </div>
+                        <div class="remove-icon" ?hidden=${!this.removeButton}>
+                            <button class="remove-house">x</button>
+                        </div>
                     </div>`)}
                     <div class="house-box-content">
                         <div class="house-name">Total</div>
                         <div class="house-balance">${this.numberCurrency(this.totalBalance)}</div>
+                    </div>
+                    <div class="house-box-content">
+                        <div class="house-name">PNL</div>
+                        <div class="house-balance">${this.numberCurrency((this.totalBalance - this.realBalance))} (${(((this.totalBalance - this.realBalance) / this.realBalance) * 100).toFixed(2) || 0}%)</div>
                     </div>
             </div>
         `;

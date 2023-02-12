@@ -15,6 +15,10 @@ export const Styles = css`
         margin-top: 15px;
     }
 
+    [hidden] {
+        display: none !important;
+    }
+
     .header {
         display: flex;
         justify-content: space-between;
@@ -30,7 +34,8 @@ export const Styles = css`
         text-transform: uppercase;
     }
 
-    .create-new-house {
+    .create-new-house,
+    .show-button-remove {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -52,6 +57,15 @@ export const Styles = css`
 
     .create-new-house:disabled{
         background-color: ${unsafeCSS(Colors.green5)};
+    }
+
+    .show-button-remove {
+        background-color: ${unsafeCSS(Colors.red3)};
+        border: 1px solid ${unsafeCSS(Colors.red2)};
+    }
+
+    .show-button-remove:hover {
+        background-color: ${unsafeCSS(Colors.red1)};
     }
 
     .houses-balance {
@@ -110,6 +124,29 @@ export const Styles = css`
     .house-balance {
         display: flex;
         justify-content: flex-end;
+    }
+
+    .remove-icon,
+    .buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .buttons {
+        gap: 10px;
+    }
+
+    .remove-house {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        margin: 0;
+        cursor: pointer;
+        font-size: 12px;
+        color: red;
     }
 
 `;

@@ -10,8 +10,8 @@ export const Styles = css`
         width: 250px;
         height: 40px;
         position: relative;
-        background-color: ${unsafeCSS(Colors.gray3)};
-        border: 1px solid ${unsafeCSS(Colors.gray4)};
+        background-color: ${unsafeCSS(Colors.blue1)};
+        border: 1px solid ${unsafeCSS(Colors.blue3)};
         border-radius: 5px;
         z-index: 10000;
     }
@@ -28,8 +28,8 @@ export const Styles = css`
         position: absolute;
         top:45px;
         width: 100%;
-        background-color: ${unsafeCSS(Colors.gray3)};
-        border: 1px solid ${unsafeCSS(Colors.gray4)};
+        background-color: ${unsafeCSS(Colors.blue1)};
+        border: 1px solid ${unsafeCSS(Colors.blue3)};
         border-radius: 5px;
     }
 
@@ -40,7 +40,7 @@ export const Styles = css`
         justify-content: center;
         width: 100%;
         height: 30px;
-        border-bottom: 1px solid ${unsafeCSS(Colors.gray4)};
+        border-bottom: 1px solid ${unsafeCSS(Colors.blue3)};
         cursor: pointer;
     }
 
@@ -72,10 +72,31 @@ export const Styles = css`
         font-size: 16px;
         font-weight: 300;
         cursor: pointer;
+        position: relative;
     }
 
     .user-select:hover,
     .user-selected:hover {
-        background-color: ${unsafeCSS(Colors.gray4)};
+        background-color: ${unsafeCSS(Colors.blue2)};
+    }
+
+    .user-name {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .remove-user {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        justify-self: flex-end;
+        position: absolute;
+        right: 0;
+        background:transparent;
+        border: none;
+        color: red;
+        cursor: pointer;
     }
 `;

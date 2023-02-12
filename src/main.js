@@ -4,7 +4,7 @@ import '/style.css';
 
 const appContent = html`
     <header>
-        <h1>Gerenciador de BET</h1>
+        <h1>BET Manager</h1>
         <select-users></select-users>
     </header>
     <div class="main">
